@@ -14,5 +14,9 @@
   "type": "module",
   "workspaces": [
     "src/motoko_crud_frontend"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap": "^5.3.7",
+    "react-bootstrap": "^2.10.10"
+  }
 }

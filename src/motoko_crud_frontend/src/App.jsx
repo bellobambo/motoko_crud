@@ -1,30 +1,37 @@
-import { useState } from 'react';
-import { motoko_crud_backend } from 'declarations/motoko_crud_backend';
+import { useEffect, useState } from "react";
+import { motoko_crud_backend } from "declarations/motoko_crud_backend";
+import Table from "react-bootstrap/Table";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [allUsers, setAllUsers] = useState("");
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    motoko_crud_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
+  useEffect(() => {
+    motoko_crud_backend.readAll().then((res) => {
+      console.log("Data fetched", res);
+      // setAllUsers(allUsers);
     });
-    return false;
-  }
+  }, []);
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <>
+      <h1>List all users</h1>
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Seven</td>
+            <td>Luna</td>
+          </tr>
+        </tbody>
+      </Table>
+    </>
   );
 }
 
