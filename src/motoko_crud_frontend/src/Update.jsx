@@ -1,27 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Container } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { motoko_crud_backend } from "../../declarations/motoko_crud_backend";
+import { Link, useParams } from "react-router-dom";
 
-const Create = () => {
+const Update = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const { id } = useParams();
+
+  let id2 = parseInt(id, 10);
+
+  useEffect(() => {
+    motoko_crud_backend.read(id2).then((res) => {
+      console.log("Data fetched", res);
+      setFirstName(res[0].firstname);
+      setLastName(res[0].lastname);
+    });
+  }, []);
 
   const handleSubmit = (e) => {
     const data = {
       firstname: firstName,
       lastname: lastName,
     };
-    motoko_crud_backend.created(data).then((res) => {
+    motoko_crud_backend.update(id2, data).then((res) => {
       console.log("Data fetched", res);
-      alert("New User Added!");
+      alert("User Updated!");
       window.location.href = "/";
     });
   };
+
   return (
     <>
       <Container fluid="md">
-        <div>Create New User</div>
+        <div>Update User</div>
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>First Name </Form.Label>
@@ -44,10 +57,11 @@ const Create = () => {
           <Button variant="dark" onClick={handleSubmit}>
             Submit
           </Button>
+          <Link to="/">Back</Link>
         </Form>
       </Container>
     </>
   );
 };
 
-export default Create;
+export default Update;
