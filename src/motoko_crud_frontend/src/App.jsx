@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motoko_crud_backend } from "declarations/motoko_crud_backend";
 import Table from "react-bootstrap/Table";
-import { Alert, Button, Container } from "react-bootstrap";
+import { Alert, Button, Container, Image } from "react-bootstrap";
 
 function App() {
   const [allUsers, setAllUsers] = useState([]);
@@ -36,6 +36,7 @@ function App() {
           <thead>
             <tr>
               <th>No.</th>
+              <th>Image</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Action</th>
@@ -45,7 +46,19 @@ function App() {
             {allUsers.map((val, i) => (
               <tr>
                 <td>{i + 1}</td>
-                {/* <td>{val[0]}</td> */}
+                <td>
+                  {val[1].img ? (
+                    <Image
+                      height={100}
+                      width={100}
+                      roundedCircle
+                      src={val[1].img}
+                      alt="User"
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                </td>
                 <td>{val[1].firstname}</td>
                 <td>{val[1].lastname}</td>
                 <td>

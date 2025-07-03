@@ -7,6 +7,8 @@ import { Link, useParams } from "react-router-dom";
 const Update = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [image, setImage] = useState(null);
+
   const { id } = useParams();
 
   let id2 = parseInt(id, 10);
@@ -16,13 +18,28 @@ const Update = () => {
       console.log("Data fetched", res);
       setFirstName(res[0].firstname);
       setLastName(res[0].lastname);
+      setImage(res[0].img ? res[0].img[0] : null);
     });
   }, []);
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const data = new FileReader();
+      data.onload = () => {
+        setImage(data.result);
+      };
+      data.readAsDataURL(file);
+    } else {
+      setImage(null);
+    }
+  };
 
   const handleSubmit = (e) => {
     const data = {
       firstname: firstName,
       lastname: lastName,
+      img: image === null ? [] : [image],
     };
     motoko_crud_backend.update(id2, data).then((res) => {
       console.log("Data fetched", res);
@@ -54,6 +71,11 @@ const Update = () => {
               onChange={(e) => setLastName(e.target.value)}
             />
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Image</Form.Label>
+            <Form.Control type="file" name="img" onChange={handleImage} />
+          </Form.Group>
+
           <Button variant="dark" onClick={handleSubmit}>
             Submit
           </Button>

@@ -10,6 +10,7 @@ actor User {
   public type Users = {
     firstname : Text;
     lastname : Text;
+    img : ?Text;
   };
 
   private stable var id : UserId = 0;
